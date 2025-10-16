@@ -1,0 +1,25 @@
+# Docker compose file for Wyoming-Piper (TTS) instance. Required for LLaMaDesu backend
+# Docker image built from https://github.com/chaosiris/vchaos-wyoming-piper
+# Originally sourced from https://github.com/slackr31337/wyoming-piper-gpu. Big thank you to slackr31337!
+
+services:
+  llamadesu-wyoming-piper:
+    container_name: llamadesu-wyoming-piper
+    image: chaosiris/vchaos-wyoming-piper:latest
+    ports:
+      - 10200:10200
+    volumes:
+      # Assumes the compose file is being ran from the /setup/docker directory. Please adjust accordingly as needed!
+      - ../../src/data/tts_models:/data
+      - ../../src/tmp:/tmp
+      - ../../src/output:/output
+      - ../../src/settings.yaml:/settings.yaml
+    restart: always
+    command: --voice en_US-kozue-medium
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
