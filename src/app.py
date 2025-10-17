@@ -235,8 +235,6 @@ async def send_to_piper(llm_output: str):
     """
     Sends the text output to the Piper endpoint.
     """
-    # Remove asterisks from LLM output
-    llm_output = llm_output.replace('*', '')
 
     try:
         async with AsyncTcpClient(PIPER_HOST, PIPER_PORT) as client:
