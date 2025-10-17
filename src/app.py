@@ -122,7 +122,6 @@ async def send_prompt(request: Request, _: None = Depends(validate_connection)):
     except Exception as e:
         return {"success": False, "error": f"Application error: {str(e)}"}
 
-
 async def send_to_haos(user_input: str):
     """
     Sends the prompt to the HAOS webhook.
@@ -141,54 +140,80 @@ async def send_to_haos(user_input: str):
 
 async def send_to_ollama(user_input: str):
     """
-    Sends the prompt to the local Ollama endpoint.
+    Sends the prompt to the local Ollama endpoint, checking for chat functionality.
     """
     try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
+
+        # Prepare the data depending on whether we're using /api/chat or /api/generate
+        if 'chat' in OLLAMA_URL:
+            assistant_responses = []
+            output_dir = 'output'
+
+            files = sorted(
+                [f for f in os.listdir(output_dir) if f.endswith('.txt')],
+                key=lambda x: os.path.getmtime(os.path.join(output_dir, x)),
+                reverse=True
+            )[:10]
+
+            for file_name in files:
+                try:
+                    with open(os.path.join(output_dir, file_name), 'r', encoding='utf-8-sig') as file:
+                        content = file.read().strip()
+                        assistant_responses.append(content)
+                except UnicodeDecodeError as e:
+                    print(f"Error reading {file_name}: {str(e)}. Skipping this file.")
+
+            # Reverse the chronology of the messages (earliest on top, latest on bottom)
+            assistant_responses.reverse()
+
+            data = {
+                "model": OLLAMA_MODEL,
+                "messages": [{"role": "assistant", "content": response} for response in assistant_responses]
+            }
+            data["messages"].append({"role": "user", "content": user_input})
+
+        else:
+            data = {"model": OLLAMA_MODEL, "prompt": user_input}
+
+        async with httpx.AsyncClient() as client:
             response = await client.post(
-                OLLAMA_URL, 
-                json={"model": OLLAMA_MODEL, "prompt": user_input},
+                OLLAMA_URL,
+                json=data,
                 headers={"Content-Type": "application/json"}
             )
-            response.raise_for_status()  
-
-            # Log status and headers for debugging
-            print(f"Response Status Code: {response.status_code}")
-            print(f"Response Headers: {response.headers}")
-
+            response.raise_for_status()
+            
             if response.status_code == 204:
                 return {"success": False, "error": "No content returned by Ollama"}
 
             # Check for correct content type (NDJSON)
             content_type = response.headers.get("Content-Type", "")
-            
             if "application/x-ndjson" not in content_type:
                 return {"success": False, "error": f"Expected NDJSON response, but got: {content_type}"}
 
             # Placeholder array to hold all the text segments
             full_response = []
 
-            # Read the NDJSON response line by line
             async for line in response.aiter_lines():
-
                 if not line.strip():
                     continue
 
                 try:
-                    # Parse each line as JSON
                     response_data = json.loads(line)
 
-                    # Append the response part to the list
-                    if "response" in response_data:
+                    # If using /api/chat, look for 'message'['content']
+                    if 'message' in response_data and 'content' in response_data['message']:
+                        full_response.append(response_data['message']['content'])
+
+                    # If using /api/generate, look for 'response'
+                    elif "response" in response_data:
                         full_response.append(response_data["response"])
 
                     # Response is complete when 'done' parameter is True
                     if response_data.get("done", False):
-                        print("Done received, finishing processing.")
                         break
 
                 except json.JSONDecodeError as e:
-                    print(f"Error parsing NDJSON line: {str(e)}")
                     return {"success": False, "error": f"Error parsing NDJSON line: {str(e)}"}
 
             llm_output = "".join(full_response)
@@ -197,6 +222,7 @@ async def send_to_ollama(user_input: str):
             return {"success": True, "message": "Sent successfully to Ollama endpoint", "input": user_input, "response": llm_output}
 
     except Exception as e:
+        print(f"Error during processing: {str(e)}")
         return {"success": False, "error": f"Error sending to Ollama: {str(e)}"}
 
 async def send_to_cloud(user_input: str):
@@ -209,6 +235,9 @@ async def send_to_piper(llm_output: str):
     """
     Sends the text output to the Piper endpoint.
     """
+    # Remove asterisks from LLM output
+    llm_output = llm_output.replace('*', '')
+
     try:
         async with AsyncTcpClient(PIPER_HOST, PIPER_PORT) as client:
             synthesize_event = Synthesize(
