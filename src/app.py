@@ -29,8 +29,14 @@ MODE = config.get("backend", {}).get("app", {}).get("mode", "local")
 PROTOCOL = config.get("backend", {}).get("app", {}).get("protocol", "http")
 LOG_LEVEL = config.get("backend", {}).get("logging", {}).get("level", "INFO").upper()
 HAOS_WEBHOOK = config.get("backend", {}).get("urls", {}).get("haos_webhook", "http://homeassistant.local:8123/api/webhook/haos_webhook")
-OLLAMA_URL = config.get("backend", {}).get("urls", {}).get("ollama_url", "http://localhost:11434/api/generate")
+OLLAMA_URL = config.get("backend", {}).get("urls", {}).get("ollama_url", "http://localhost:11434/api/chat")
 OLLAMA_MODEL = config.get("backend", {}).get("urls", {}).get("ollama_model", "llama3.1:8b")
+CLOUD_URL = config.get("backend", {}).get("urls", {}).get("cloud_url", "https://api.openai.com/v1/chat/completion")
+CLOUD_MODEL = config.get("backend", {}).get("urls", {}).get("cloud_model", "gpt-4")
+if MODE == "cloud":
+    from dotenv import load_dotenv
+    load_dotenv()
+    CLOUD_API_KEY = os.getenv("CLOUD_API_KEY")
 PIPER_HOST = config.get("backend", {}).get("urls", {}).get("piper_host", "127.0.0.1")
 PIPER_PORT = config.get("backend", {}).get("urls", {}).get("piper_port", 10200)
 PIPER_MODEL = config.get("backend", {}).get("urls", {}).get("piper_model", "en_US-kozue-medium")
@@ -140,12 +146,13 @@ async def send_to_haos(user_input: str):
 
 async def send_to_ollama(user_input: str):
     """
-    Sends the prompt to the local Ollama endpoint, checking for chat functionality.
+    Sends the prompt to the local Ollama endpoint.
     """
     try:
-
+        print('Stage 1')
         # Prepare the data depending on whether we're using /api/chat or /api/generate
         if 'chat' in OLLAMA_URL:
+            print('Stage 2')
             assistant_responses = []
             output_dir = 'output'
 
@@ -165,15 +172,18 @@ async def send_to_ollama(user_input: str):
 
             # Reverse the chronology of the messages (earliest on top, latest on bottom)
             assistant_responses.reverse()
+            print('Stage 3')
 
             data = {
                 "model": OLLAMA_MODEL,
                 "messages": [{"role": "assistant", "content": response} for response in assistant_responses]
             }
             data["messages"].append({"role": "user", "content": user_input})
+            print('Stage 4')
 
         else:
             data = {"model": OLLAMA_MODEL, "prompt": user_input}
+            print('Stage 2a')
 
         async with httpx.AsyncClient() as client:
             response = await client.post(
@@ -182,6 +192,7 @@ async def send_to_ollama(user_input: str):
                 headers={"Content-Type": "application/json"}
             )
             response.raise_for_status()
+            print('Stage 6')
             
             if response.status_code == 204:
                 return {"success": False, "error": "No content returned by Ollama"}
@@ -200,6 +211,7 @@ async def send_to_ollama(user_input: str):
 
                 try:
                     response_data = json.loads(line)
+                    print(response_data)
 
                     # If using /api/chat, look for 'message'['content']
                     if 'message' in response_data and 'content' in response_data['message']:
@@ -222,14 +234,55 @@ async def send_to_ollama(user_input: str):
             return {"success": True, "message": "Sent successfully to Ollama endpoint", "input": user_input, "response": llm_output}
 
     except Exception as e:
-        print(f"Error during processing: {str(e)}")
         return {"success": False, "error": f"Error sending to Ollama: {str(e)}"}
+
 
 async def send_to_cloud(user_input: str):
     """
     Sends the prompt to the specified cloud-based LLM API endpoint.
     """
-    return {"success": False, "error": "Cloud mode to be implemented"}
+    try:
+        if not CLOUD_API_KEY or CLOUD_API_KEY.strip() == "":
+            await send_to_piper("Cloud API Key is not set. Please ensure CLOUD_API_KEY is defined in .env")
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {CLOUD_API_KEY}"
+        }
+
+        data = [
+            {"role": "system", "content": "You are a uwu-maxxed chat assistant named Ai-sama."},
+            {"role": "user", "content": user_input}
+        ]
+
+        payload = {
+            "model": CLOUD_MODEL,
+            "messages": data,
+            "max_tokens": 1000,
+            "temperature": 0.7
+        }
+
+        async with httpx.AsyncClient() as client:
+            response = await client.post(CLOUD_URL, json=payload, headers=headers)
+
+        response.raise_for_status()
+
+        response_data = response.json()
+        if "choices" in response_data:
+            model_response = response_data["choices"][0]["message"]["content"].strip()
+            print(model_response)
+            await send_to_piper(model_response)
+        else:
+            return {"success": False, "error": "Invalid response format from Cloud API"}
+
+    except httpx.HTTPStatusError as e:
+        return {"success": False, "error": f"HTTP error occurred: {e.response.status_code}"}
+
+    except httpx.RequestError as e:
+        return {"success": False, "error": f"Request error occurred: {str(e)}"}
+
+    except Exception as e:
+        return {"success": False, "error": f"An error occurred: {str(e)}"}
 
 async def send_to_piper(llm_output: str):
     """
