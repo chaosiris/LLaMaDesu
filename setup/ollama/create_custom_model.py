@@ -27,6 +27,29 @@ def check_model_exists(model_name):
         print(f"An error occurred while checking for the model: {str(e)}")
         return False
 
+def install_model(model_name):
+    response = input(f"\nNo Ollama models are installed. Would you like to install '{model_name}' (recommended default model for LLaMaDesu!)? (y/n): ").strip().lower()
+    if response == 'y':
+        try:
+            print(f"Installing {model_name}...")
+            result = subprocess.run(
+                ['ollama', 'pull', model_name],
+                capture_output=True,
+                text=True
+            )
+            if result.returncode == 0:
+                print(f"{model_name} installed successfully!")
+                return True
+            else:
+                print(f"Error installing {model_name}: {result.stderr}")
+                return False
+        except Exception as e:
+            print(f"An error occurred while installing the model: {str(e)}")
+            return False
+    else:
+        print(f"Skipping model installation. Proceeding with the rest of the script.")
+        return True
+
 def create_custom_model():
     modelfile_path = './Modelfile.txt'
 
@@ -64,6 +87,16 @@ def create_custom_model():
         print(f"Error extracting settings from Modelfile: {str(e)}")
         return
 
+    result = subprocess.run(
+        ['ollama', 'list'],
+        capture_output=True,
+        text=True
+    )
+    models = re.findall(r"^\S+", result.stdout.strip(), re.MULTILINE)
+
+    if len(models) == 0:
+        install_model("llama3.1:8b")
+
     print("\n--- LLaMaDesu! - Custom Model Creation ---")
     print(f"Original Model: {model_name}")
     print(f"  - Ensure this model is available and pulled using 'ollama pull'\n")
@@ -76,10 +109,9 @@ def create_custom_model():
 
     print(f"System Prompt: {system_prompt}")
     print(f"  - This instructs the model to behave in the specified way.\n")
+    print(f"\nIf any settings are incorrect, please modify in ./setup/ollama/Modelfile.txt and re-run setup.exe!")
 
-    # Add a note to remind the user that the model name is case-sensitive
-
-    response = input("\nAre these settings correct? If not, please modify ./setup/ollama/Modelfile.txt before proceeding! (y/n): ").strip().lower()
+    response = input("Would you like to proceed with creating a custom model with these settings? (y/n): ").strip().lower()
     if response != 'y':
         print("Creation of custom model aborted. Exiting create_custom_model.py...")
         return
