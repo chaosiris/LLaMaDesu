@@ -10,9 +10,11 @@ LLaMaDesu! - your dedicated Live2D AI companion app designed to curb your loneli
 - Docker (w/ WSL2)
 - Ollama (with at least one model pulled, as a starting example we will be using llama3.1:8b)
 
+---
+
 ## Provisioning/Setup Steps
 
-### Virtual Environment
+### 1. Virtual Environment
 
 Create a venv/ at the root of the folder, then activate it:
 
@@ -21,7 +23,14 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### Docker Setup
+If you would like to use Cloud API, create a `.env` file at root and follow the example in `.env.example`:
+
+```bash
+touch .env
+nano .env
+```
+
+### 2. Docker Setup
 
 Navigate to the setup/docker folder:
 
@@ -34,7 +43,7 @@ python docker_setup.py
 
 Ensure both docker containers for Whisper and Piper are up and running.
 
-### 2. SSL Certificate Generation
+### 3. SSL Certificate Generation
 
 Navigate to setup/openssl:
 
@@ -46,7 +55,7 @@ python generate_ssl_keys.py
 
 This generates SSL certs required for HTTPS.
 
-### 3. Home Assistant Integration (Optional)
+### 4. Home Assistant Integration (Optional)
 
 For Home Assistant users, copy the automation file:
 
@@ -54,7 +63,7 @@ For Home Assistant users, copy the automation file:
 cp setup/haos/haos_webhook.yaml <your_haos_automations_directory>
 ```
 
-### 4. Pull Model from Ollama
+### 5. Pull Model from Ollama
 
 Check whether if the local machine has any model (`ollama list`) from Ollama or not, if not perform the following steps:
 
@@ -62,7 +71,7 @@ Check whether if the local machine has any model (`ollama list`) from Ollama or 
 ollama pull llama3.1:8b
 ```
 
-### 5. Application Setup
+### 6. Application Setup
 
 Navigate to `src/`, install the app dependencies and generate the model dictionary.
 
@@ -74,7 +83,7 @@ pip install -r requirements.txt
 python generate_model_dict.py
 ```
 
-### 6. Custom Model Creation (Optional)
+### 7. Custom Model Creation (Optional)
 
 Navigate to `setup/ollama` and run the custom model creation script:
 
@@ -86,7 +95,7 @@ python create_custom_model.py
 
 Once created, update the `OLLAMA_MODEL` variable in `settings.yaml` to use your custom model.
 
-### 7. Configuration and Launch
+### 8. Configuration and Launch
 
 Edit `settings.yaml` if there are any endpoints that differ from the default values.
 
@@ -97,3 +106,5 @@ python app.py
 ```
 
 Open your browser and connect to `localhost:port`.
+
+---
