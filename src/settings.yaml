@@ -1,12 +1,12 @@
 backend:
   app:
-    host: 0.0.0.0     # Host address (use 0.0.0.0 for LAN access; or 127.0.0.1 for host machine access only) // Default: 0.0.0.0
-    port: 11405       # Port number for the web server (can be any unassigned port) // Default: 11405
-    mode: local       # Choose where the LLM prompts will be sent to (cloud/local/haos) // Default: local
-    protocol: https   # Use HTTP/HTTPS (set "http" or "https". For https, cert.pem and key.pem must be present in the same directory as app.py!) // Default: http
-    multicast: false  # If initiated from a satellite device, should the output be sent to the satellite device even if there are clients connected to the frontend? // Default: false
+    host: 0.0.0.0 # Host address (use 0.0.0.0 for LAN access; or 127.0.0.1 for host machine access only) // Default: 0.0.0.0
+    port: 11405 # Port number for the web server (can be any unassigned port) // Default: 11405
+    mode: local # Choose where the LLM prompts will be sent to (cloud/local/haos) // Default: local
+    protocol: https # Use HTTP/HTTPS (set "http" or "https". For https, cert.pem and key.pem must be present in the same directory as app.py!) // Default: http
+    multicast: false # If initiated from a satellite device, should the output be sent to the satellite device even if there are clients connected to the frontend? // Default: false
   logging:
-    level: INFO       # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL) // Default: INFO
+    level: INFO # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL) // Default: INFO
   urls:
     haos_webhook: http://homeassistant.local:8123/api/webhook/haos_webhook # Webhook URL as configured in HAOS automations.
     ollama_url: http://localhost:11434/api/chat # API Endpoint for Ollama instance // Default: http://localhost:11434/api/chat
@@ -20,13 +20,13 @@ backend:
     whisper_port: 10300 # Port for Whisper instance // Default: 10300
 
 frontend:
-  show-sent-prompts: true     # After sending a text prompt, should it be displayed? // Default: true
-  enable-idle-motion: true    # Enable the idle motion loop of the Live2D model, as specified in model_dict.json. // Default: true
-  enable-tap-motion: true     # Enable the tap motion which will be ran whenever you click/tap on your Live2D model, as specified in model_dict.json. // Default: true
-  enable-prompt-repeat: true  # Enable the button to re-paste your previous text prompt into the input text field OR resend your previous voice prompt. // Default: true
-  enable-mouth-scaling: true  # Scale the mouth movement of the Live2D model according to the syllables being pronounced. Disable if too resource intensive on older browsers/devices. // Default: true
-  enable-voice-input: true    # Should the Push to Talk voice input button be enabled? Requires the app protocol to be configured to HTTPS to work over mobile devices. // Default: true
-  save-chat-history: true     # Should output audio/text files be saved? Disable for private mode. // Default: true
-  adaptive-background: true   # Should the background be changed according to the time of day? // Default: true
-  timeout: 300                # How long should the user wait for a response from the pipeline before timing out (in seconds?) // Default: 180
+  show-sent-prompts: true # After sending a text prompt, should it be displayed? // Default: true
+  enable-idle-motion: true # Enable the idle motion loop of the Live2D model, as specified in model_dict.json. // Default: true
+  enable-tap-motion: true # Enable the tap motion which will be ran whenever you click/tap on your Live2D model, as specified in model_dict.json. // Default: true
+  enable-prompt-repeat: true # Enable the button to re-paste your previous text prompt into the input text field OR resend your previous voice prompt. // Default: true
+  enable-mouth-scaling: true # Scale the mouth movement of the Live2D model according to the syllables being pronounced. Disable if too resource intensive on older browsers/devices. // Default: true
+  enable-voice-input: true # Should the Push to Talk voice input button be enabled? Requires the app protocol to be configured to HTTPS to work over mobile devices. // Default: true
+  save-chat-history: true # Should output audio/text files be saved? Disable for private mode. // Default: true
+  adaptive-background: true # Should the background be changed according to the time of day? // Default: true
+  timeout: 300 # How long should the user wait for a response from the pipeline before timing out (in seconds?) // Default: 180
   model-name: hiyori_free_t08 # Specify the name of the Live2D model to use (populated by the list of models in model_dict.json) // Default: hiyori_free_t08

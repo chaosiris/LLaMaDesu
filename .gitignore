@@ -10,3 +10,7 @@ src/key.pem
 src/cert.pem
 src/routes/__pycache__
 src/tests/__pycache__
+venv/
+.vscode/
+.env
+.DS_Store
