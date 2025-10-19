@@ -2,8 +2,33 @@ import os
 import subprocess
 import re
 
+def check_model_exists(model_name):
+    """ Check if the model already exists by listing available models. """
+    try:
+        result = subprocess.run(
+            ['ollama', 'list'],
+            capture_output=True,
+            text=True
+        )
+
+        if result.returncode == 0:
+            models = re.findall(r"^\S+", result.stdout.strip(), re.MULTILINE)
+            normalized_models = [model.split(':')[0] for model in models]
+
+            if model_name.lower() in [existing_model.lower() for existing_model in normalized_models]:
+                return True
+
+            return False
+
+        else:
+            print(f"Error listing models: {result.stderr}")
+            return False
+    except Exception as e:
+        print(f"An error occurred while checking for the model: {str(e)}")
+        return False
+
 def create_custom_model():
-    modelfile_path = './Modelfile'
+    modelfile_path = './Modelfile.txt'
 
     try:
         with open(modelfile_path, 'r', encoding='utf-8') as file:
@@ -16,7 +41,15 @@ def create_custom_model():
         return
 
     try:
-        model_name = modelfile_content.splitlines()[0].strip().replace("FROM ", "")
+        model_name = None
+        for line in modelfile_content.splitlines():
+            if line.startswith("FROM "):
+                model_name = line.strip().replace("FROM ", "")
+                break
+
+        if not model_name:
+            print("Error: Model name not found in the Modelfile.")
+            return
 
         temperature_match = re.search(r"PARAMETER temperature (\d+(\.\d+)?)", modelfile_content)
         temperature = temperature_match.group(1) if temperature_match else "Not defined"
@@ -44,12 +77,25 @@ def create_custom_model():
     print(f"System Prompt: {system_prompt}")
     print(f"  - This instructs the model to behave in the specified way.\n")
 
-    response = input("\nAre these settings correct? (y/n): ").strip().lower()
+    # Add a note to remind the user that the model name is case-sensitive
+
+    response = input("\nAre these settings correct? If not, please modify ./setup/ollama/Modelfile.txt before proceeding! (y/n): ").strip().lower()
     if response != 'y':
-        print("Please modify the settings by opening the Modelfile as a .txt. Exiting...")
+        print("Creation of custom model aborted. Exiting create_custom_model.py...")
         return
 
-    model_name = input("Please choose a model name: ").strip()
+    print("\nNOTE: Model names are case-sensitive! Just hit enter with an empty model name if you wish to skip model creation.")
+    while True:
+        model_name = input("Please choose a model name: ").strip()
+
+        if model_name == "":
+            print("Model creation skipped. Exiting create_custom_model.py...")
+            return
+
+        if check_model_exists(model_name):
+            print(f"Error: The model '{model_name}' already exists. Please choose a different name.")
+        else:
+            break
 
     try:
         print(f"Creating model '{model_name}' using the Modelfile...")
@@ -70,7 +116,7 @@ def create_custom_model():
         return
 
     input("\nPlease remember to update the OLLAMA_MODEL variable in settings.yaml to use your newly created custom model.")
-    print("Exiting...")
+    print("Exiting create_custom_model.py...")
 
 if __name__ == "__main__":
     create_custom_model()

@@ -1,8 +1,0 @@
-fastapi
-uvicorn
-websockets
-wyoming
-httpx
-python-dotenv
-python-multipart
-ruamel.yaml

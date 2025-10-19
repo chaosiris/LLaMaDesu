@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+websockets
+wyoming
+httpx
+pyOpenSSL
+python-dotenv
+python-multipart
+ruamel.yaml
