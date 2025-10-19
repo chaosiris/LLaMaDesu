@@ -8,14 +8,14 @@ backend:
   logging:
     level: INFO       # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL) // Default: INFO
   urls:
-    haos_webhook: http://homeassistant.local:8123/api/webhook/haos_webhook    # Webhook URL as configured in HAOS automations.
+    haos_webhook: http://homeassistant.local:8123/api/webhook/haos_webhook # Webhook URL as configured in HAOS automations.
     ollama_url: http://localhost:11434/api/chat # API Endpoint for Ollama instance // Default: http://localhost:11434/api/chat
     ollama_model: llama3.1:8b # Specify which Ollama model to run (check using 'ollama list' in terminal) // Default: llama3.1:8b
-    cloud_url: https://api.openai.com/v1/chat/completions # API Endpoint for cloud LLM // Default: https://api.openai.com/v1/chat/completions
-    cloud_model: gpt-3.5-turbo # Specify which model to run on the cloud LLM platform // Default: gpt-3.5-turbo
+    cloud_platform: gemini # Cloud LLM platform for chatbot inferencing (currently supported: gemini/chatgpt) // Default: gemini
+    cloud_model: gpt-3.5-turbo # Specify which model to run on the cloud LLM platform (for ChatGPT option) // Default: gpt-3.5-turbo
     piper_host: 127.0.0.1 # Host for Piper instance // Default 127.0.0.1
     piper_port: 10200 # Port for Piper instance // Default: 10200
-    piper_model: en_US-kozue-medium  # Specify which voice model to use for TTS (from available models in /data/tts_models) // Default: en_US-kozue-medium
+    piper_model: en_US-kozue-medium # Specify which voice model to use for TTS (from available models in /data/tts_models) // Default: en_US-kozue-medium
     whisper_host: 127.0.0.1 # Host for Whisper instance // Default: 127.0.0.1
     whisper_port: 10300 # Port for Whisper instance // Default: 10300
 

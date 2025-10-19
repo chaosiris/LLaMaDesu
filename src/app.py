@@ -31,7 +31,7 @@ LOG_LEVEL = config.get("backend", {}).get("logging", {}).get("level", "INFO").up
 HAOS_WEBHOOK = config.get("backend", {}).get("urls", {}).get("haos_webhook", "http://homeassistant.local:8123/api/webhook/haos_webhook")
 OLLAMA_URL = config.get("backend", {}).get("urls", {}).get("ollama_url", "http://localhost:11434/api/chat")
 OLLAMA_MODEL = config.get("backend", {}).get("urls", {}).get("ollama_model", "llama3.1:8b")
-CLOUD_URL = config.get("backend", {}).get("urls", {}).get("cloud_url", "https://api.openai.com/v1/chat/completion")
+CLOUD_PLATFORM = config.get("backend", {}).get("urls", {}).get("cloud_platform", "")
 CLOUD_MODEL = config.get("backend", {}).get("urls", {}).get("cloud_model", "gpt-4")
 if MODE == "cloud":
     from dotenv import load_dotenv
@@ -232,43 +232,88 @@ async def send_to_ollama(user_input: str):
 async def send_to_cloud(user_input: str):
     """
     Sends the prompt to the specified cloud-based LLM API endpoint.
+    Supports both ChatGPT and Gemini platforms.
     """
     try:
+        if CLOUD_PLATFORM not in ["chatgpt", "gemini"]:
+            await send_to_piper("Invalid cloud platform selected. Please ensure it is either 'chatgpt' or 'gemini' in settings.yaml")
+            return {"success": False, "error": "Invalid cloud platform selected."}
+
         if not CLOUD_API_KEY or CLOUD_API_KEY.strip() == "":
             await send_to_piper("Cloud API Key is not set. Please ensure CLOUD_API_KEY is defined in .env")
 
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {CLOUD_API_KEY}"
-        }
+        # For ChatGPT platform
+        if CLOUD_PLATFORM == "chatgpt":
+            CHATGPT_URL = "https://api.openai.com/v1/chat/completions"
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {CLOUD_API_KEY}"
+            }
 
-        data = [
-            {"role": "system", "content": "You are a uwu-maxxed chat assistant named Ai-sama."},
-            {"role": "user", "content": user_input}
-        ]
+            data = [
+                {"role": "system", "content": "You are a uwu-maxxed chat assistant named Ai-sama."},
+                {"role": "user", "content": user_input}
+            ]
 
-        payload = {
-            "model": CLOUD_MODEL,
-            "messages": data,
-            "max_tokens": 1000,
-            "temperature": 0.7
-        }
+            payload = {
+                "model": CLOUD_MODEL,
+                "messages": data,
+                "max_tokens": 1000,
+                "temperature": 0.7
+            }
 
-        async with httpx.AsyncClient() as client:
-            response = await client.post(CLOUD_URL, json=payload, headers=headers)
-        response.raise_for_status()
+            async with httpx.AsyncClient() as client:
+                response = await client.post(CHATGPT_URL, json=payload, headers=headers)
+            response.raise_for_status()
 
-        response_data = response.json()
-        if "choices" in response_data:
-            model_response = response_data["choices"][0]["message"]["content"].strip()
-            await send_to_piper(model_response)
-        else:
-            return {"success": False, "error": "Invalid response format from Cloud API"}
+            response_data = response.json()
+            if "choices" in response_data:
+                cloud_response = response_data["choices"][0]["message"]["content"].strip()
+                await send_to_piper(cloud_response)
+            else:
+                return {"success": False, "error": "Invalid response format from Cloud API"}
+
+        # For Gemini platform
+        elif CLOUD_PLATFORM == "gemini":
+            GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+            system_message = "You are a uwu-maxxed chat assistant named Ai-sama."
+            headers = {
+                'Content-Type': 'application/json',
+                'X-goog-api-key': CLOUD_API_KEY
+            }
+
+            payload = {
+                "contents": [
+                    {
+                        "parts": [
+                            {
+                                "text": system_message + "\n" + user_input
+                            }
+                        ]
+                    }
+                ]
+            }
+
+            async with httpx.AsyncClient() as client:
+                response = await client.post(GEMINI_URL, json=payload, headers=headers)
+            response.raise_for_status()
+
+            response_data = response.json()
+            cloud_response = response_data.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "").strip()
+
+            if cloud_response:
+                await send_to_piper(cloud_response)
+            else:
+                await send_to_piper("No valid text response found in Gemini output.")
 
     except httpx.HTTPStatusError as e:
-        if e.response.status_code == 404:
-            await send_to_piper("There is no response from the Cloud API. Please check if your Cloud URL/Model/API Key values are correct!")
-            return {"success": False, "error": "404 Not Found Error. Please check your settings.yaml/.env file."}
+        if e.response.status_code == 400:
+            await send_to_piper("400 Bad Request. Please check if your API Key is correct in the .env file!")
+            return {"success": False, "error": "400 Bad Request. Please check if your API Key is correct in the .env file!"}
+
+        elif e.response.status_code == 404:
+            await send_to_piper("404 Not Found. The cloud URL may be invalid, or the cloud server may be currently down!")
+            return {"success": False, "error": "404 Not Found Error"}
 
         elif e.response.status_code == 429:
             rate_limit_remaining = e.response.headers.get("X-RateLimit-Remaining", "Unknown")
@@ -280,6 +325,7 @@ async def send_to_cloud(user_input: str):
             }
 
         else:
+            await send_to_piper("There is no response from the Cloud API. Please check if your cloud platform/model/API key values are correct!")
             return {"success": False, "error": f"HTTP error occurred: {e.response.status_code}"}
 
     except httpx.RequestError as e:
