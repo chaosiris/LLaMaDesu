@@ -149,10 +149,8 @@ async def send_to_ollama(user_input: str):
     Sends the prompt to the local Ollama endpoint.
     """
     try:
-        print('Stage 1')
         # Prepare the data depending on whether we're using /api/chat or /api/generate
         if 'chat' in OLLAMA_URL:
-            print('Stage 2')
             assistant_responses = []
             output_dir = 'output'
 
@@ -172,27 +170,22 @@ async def send_to_ollama(user_input: str):
 
             # Reverse the chronology of the messages (earliest on top, latest on bottom)
             assistant_responses.reverse()
-            print('Stage 3')
 
             data = {
                 "model": OLLAMA_MODEL,
                 "messages": [{"role": "assistant", "content": response} for response in assistant_responses]
             }
             data["messages"].append({"role": "user", "content": user_input})
-            print('Stage 4')
 
         else:
             data = {"model": OLLAMA_MODEL, "prompt": user_input}
-            print('Stage 2a')
 
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=60.0) as client:
             response = await client.post(
                 OLLAMA_URL,
                 json=data,
                 headers={"Content-Type": "application/json"}
             )
-            response.raise_for_status()
-            print('Stage 6')
             
             if response.status_code == 204:
                 return {"success": False, "error": "No content returned by Ollama"}
@@ -236,7 +229,6 @@ async def send_to_ollama(user_input: str):
     except Exception as e:
         return {"success": False, "error": f"Error sending to Ollama: {str(e)}"}
 
-
 async def send_to_cloud(user_input: str):
     """
     Sends the prompt to the specified cloud-based LLM API endpoint.
@@ -264,19 +256,31 @@ async def send_to_cloud(user_input: str):
 
         async with httpx.AsyncClient() as client:
             response = await client.post(CLOUD_URL, json=payload, headers=headers)
-
         response.raise_for_status()
 
         response_data = response.json()
         if "choices" in response_data:
             model_response = response_data["choices"][0]["message"]["content"].strip()
-            print(model_response)
             await send_to_piper(model_response)
         else:
             return {"success": False, "error": "Invalid response format from Cloud API"}
 
     except httpx.HTTPStatusError as e:
-        return {"success": False, "error": f"HTTP error occurred: {e.response.status_code}"}
+        if e.response.status_code == 404:
+            await send_to_piper("There is no response from the Cloud API. Please check if your Cloud URL/Model/API Key values are correct!")
+            return {"success": False, "error": "404 Not Found Error. Please check your settings.yaml/.env file."}
+
+        elif e.response.status_code == 429:
+            rate_limit_remaining = e.response.headers.get("X-RateLimit-Remaining", "Unknown")
+            rate_limit_reset = e.response.headers.get("X-RateLimit-Reset", "Unknown")
+            await send_to_piper(f"Rate limit exceeded! Remaining: {rate_limit_remaining}, Reset at: {rate_limit_reset}")
+            return {
+                "success": False,
+                "error": f"Too many requests (429). Remaining: {rate_limit_remaining}, resets at: {rate_limit_reset}"
+            }
+
+        else:
+            return {"success": False, "error": f"HTTP error occurred: {e.response.status_code}"}
 
     except httpx.RequestError as e:
         return {"success": False, "error": f"Request error occurred: {str(e)}"}
@@ -304,7 +308,6 @@ async def send_to_piper(llm_output: str):
                     raise RuntimeError("No response from Piper")
 
                 if AudioStop.is_type(event.type):
-                    print("Audio playback finished.")
                     break
 
             return {"success": True, "message": "Sent successfully to Piper endpoint"}
