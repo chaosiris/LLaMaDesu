@@ -3,7 +3,7 @@ backend:
     host: 0.0.0.0 # Host address (use 0.0.0.0 for LAN access; or 127.0.0.1 for host machine access only) // Default: 0.0.0.0
     port: 11405 # Port number for the web server (can be any unassigned port) // Default: 11405
     mode: local # Choose where the LLM prompts will be sent to (cloud/local/haos) // Default: local
-    protocol: https # Use HTTP/HTTPS (set "http" or "https". For https, cert.pem and key.pem must be present in the same directory as app.py!) // Default: http
+    protocol: https # Use HTTP/HTTPS (set "http" or "https". For https, cert.pem and key.pem must be present in the same directory as app.py!) // Default: https
     multicast: false # If initiated from a satellite device, should the output be sent to the satellite device even if there are clients connected to the frontend? // Default: false
   logging:
     level: INFO # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL) // Default: INFO
@@ -11,7 +11,7 @@ backend:
     haos_webhook: http://homeassistant.local:8123/api/webhook/haos_webhook # Webhook URL as configured in HAOS automations.
     ollama_url: http://localhost:11434/api/chat # API Endpoint for Ollama instance // Default: http://localhost:11434/api/chat
     ollama_model: llama3.1:8b # Specify which Ollama model to run (check using 'ollama list' in terminal) // Default: llama3.1:8b
-    cloud_platform: gemini # Cloud LLM platform for chatbot inferencing (currently supported: gemini/chatgpt) // Default: gemini
+    cloud_platform: gemini # Cloud LLM platform for chatbot inferencing (currently supported: "gemini" or "chatgpt") // Default: gemini
     cloud_model: gpt-3.5-turbo # Specify which model to run on the cloud LLM platform (for ChatGPT option) // Default: gpt-3.5-turbo
     piper_host: 127.0.0.1 # Host for Piper instance // Default 127.0.0.1
     piper_port: 10200 # Port for Piper instance // Default: 10200
