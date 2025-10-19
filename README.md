@@ -2,6 +2,8 @@
 
 LLaMaDesu! - your dedicated Live2D AI companion app designed to curb your loneliness. Fork of vCHAOS.
 
+---
+
 ## Requirements
 
 - Python 3.10+
@@ -72,7 +74,19 @@ pip install -r requirements.txt
 python generate_model_dict.py
 ```
 
-### 5. Configuration and Launch
+### 6. Custom Model Creation (Optional)
+
+Navigate to `setup/ollama` and run the custom model creation script:
+
+```bash
+cd setup/ollama
+pip install -r requirements.txt
+python create_custom_model.py
+```
+
+Once created, update the `OLLAMA_MODEL` variable in `settings.yaml` to use your custom model.
+
+### 7. Configuration and Launch
 
 Edit `settings.yaml` if there are any endpoints that differ from the default values.
 
