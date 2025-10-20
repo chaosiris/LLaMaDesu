@@ -3,8 +3,8 @@ import subprocess
 import platform
 
 commands = [
-    "docker-compose -p llamadesu -f piper-compose.yaml up -d",
-    "docker-compose -p llamadesu -f whisper-compose.yaml up -d"
+    "docker-compose -p llamadesu -f piper-compose.yaml up -d --force-recreate --remove-orphans",
+    "docker-compose -p llamadesu -f whisper-compose.yaml up -d --force-recreate --remove-orphans"
 ]
 
 def is_docker_running():
