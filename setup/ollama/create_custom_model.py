@@ -21,33 +21,41 @@ def check_model_exists(model_name):
             return False
 
         else:
-            print(f"Error listing models: {result.stderr}")
+            print(f"[!] Error listing models: {result.stderr}")
             return False
+    except FileNotFoundError:
+        print("\n[!] ERROR: 'ollama' executable not found in your system's PATH.")
+        print("[!] Please install Ollama or make sure it is added to your system's PATH, then re-run setup.exe.")
+        return False
     except Exception as e:
-        print(f"An error occurred while checking for the model: {str(e)}")
+        print(f"[!] An error occurred while checking for the model: {str(e)}")
         return False
 
 def install_model(model_name):
-    response = input(f"\nNo Ollama models are installed. Would you like to install '{model_name}' (recommended default model for LLaMaDesu!)? (y/n): ").strip().lower()
+    response = input(f"\n[!] No Ollama models are installed. Would you like to install '{model_name}' (recommended default model for LLaMaDesu!)? (y/n): ").strip().lower()
     if response == 'y':
         try:
-            print(f"Installing {model_name}...")
+            print(f"[>] Installing {model_name}...")
             result = subprocess.run(
                 ['ollama', 'pull', model_name],
                 capture_output=True,
                 text=True
             )
             if result.returncode == 0:
-                print(f"{model_name} installed successfully!")
+                print(f"[+] {model_name} installed successfully!")
                 return True
             else:
-                print(f"Error installing {model_name}: {result.stderr}")
+                print(f"[!] Error installing {model_name}: {result.stderr}")
                 return False
+        except FileNotFoundError:
+            print("\n[!] ERROR: 'ollama' executable not found in your system's PATH.")
+            print("[!] Please install Ollama or make sure it is added to your system's PATH, then re-run setup.exe.")
+            return False
         except Exception as e:
-            print(f"An error occurred while installing the model: {str(e)}")
+            print(f"[!] An error occurred while installing the model: {str(e)}")
             return False
     else:
-        print(f"Skipping model installation. Proceeding with the rest of the script.")
+        print(f"[>] Skipping model installation. Proceeding with the rest of the script.")
         return True
 
 def create_custom_model():
@@ -57,10 +65,10 @@ def create_custom_model():
         with open(modelfile_path, 'r', encoding='utf-8') as file:
             modelfile_content = file.read().strip()
     except FileNotFoundError:
-        print(f"Modelfile not found at: {modelfile_path}")
+        print(f"[!] Modelfile not found at: {modelfile_path}")
         return
     except Exception as e:
-        print(f"Error reading the Modelfile: {str(e)}")
+        print(f"[!] Error reading the Modelfile: {str(e)}")
         return
 
     try:
@@ -71,7 +79,7 @@ def create_custom_model():
                 break
 
         if not model_name:
-            print("Error: Model name not found in the Modelfile.")
+            print("[!] ERROR: Model name not found in the Modelfile.")
             return
 
         temperature_match = re.search(r"PARAMETER temperature (\d+(\.\d+)?)", modelfile_content)
@@ -84,7 +92,7 @@ def create_custom_model():
         system_prompt = system_prompt_match.group(1) if system_prompt_match else "Not defined"
 
     except Exception as e:
-        print(f"Error extracting settings from Modelfile: {str(e)}")
+        print(f"[!] Error extracting settings from Modelfile: {str(e)}")
         return
 
     result = subprocess.run(
@@ -111,26 +119,26 @@ def create_custom_model():
     print(f"  - This instructs the model to behave in the specified way.\n")
     print(f"\nIf any settings are incorrect, please modify in ./setup/ollama/Modelfile.txt and re-run setup.exe!")
 
-    response = input("Would you like to proceed with creating a custom model with these settings? (y/n): ").strip().lower()
+    response = input("[>] Would you like to proceed with creating a custom model with these settings? (y/n): ").strip().lower()
     if response != 'y':
-        print("Creation of custom model aborted. Exiting create_custom_model.py...")
+        print("[>] Creation of custom model aborted. Exiting create_custom_model.py...")
         return
 
     print("\nNOTE: Model names are case-sensitive! Just hit enter with an empty model name if you wish to skip model creation.")
     while True:
-        model_name = input("Please choose a model name: ").strip()
+        model_name = input("[>] Please choose a model name: ").strip()
 
         if model_name == "":
-            print("Model creation skipped. Exiting create_custom_model.py...")
+            print("[>] Model creation skipped. Exiting create_custom_model.py...")
             return
 
         if check_model_exists(model_name):
-            print(f"Error: The model '{model_name}' already exists. Please choose a different name.")
+            print(f"[!] Error: The model '{model_name}' already exists. Please choose a different name.")
         else:
             break
 
     try:
-        print(f"Creating model '{model_name}' using the Modelfile...")
+        print(f"[>] Creating model '{model_name}' using the Modelfile...")
         result = subprocess.run(
             ['ollama', 'create', model_name, '-f', modelfile_path],
             capture_output=True,
@@ -138,17 +146,21 @@ def create_custom_model():
         )
 
         if result.returncode == 0:
-            print(f"Model '{model_name}' created successfully!")
+            print(f"[+] Model '{model_name}' created successfully!")
         else:
-            print(f"Error creating model: {result.stderr}")
+            print(f"[!] Error creating model: {result.stderr}")
             return
     
+    except FileNotFoundError:
+        print("\n[!] ERROR: 'ollama' executable not found in your system's PATH.")
+        print("[!] Please install Ollama or make sure it is added to your system's PATH, then re-run setup.exe.")
+        return
     except Exception as e:
-        print(f"An error occurred while creating the model: {str(e)}")
+        print(f"[!] An error occurred while creating the model: {str(e)}")
         return
 
-    input("\nPlease remember to update the OLLAMA_MODEL variable in settings.yaml to use your newly created custom model.")
-    print("Exiting create_custom_model.py...")
+    input("\n[>] Please remember to update the OLLAMA_MODEL variable in settings.yaml to use your newly created custom model.")
+    print("[>] Exiting create_custom_model.py...")
 
 if __name__ == "__main__":
     create_custom_model()
