@@ -13,7 +13,7 @@ It's already the big 2020s after all - who doesn't need an anime AI chatbot in t
 # ⚡ Features
 
 🧩 **Cross-Platform and LAN-Wide Connectivity**
-- LLaMaDesu can be hosted on any Windows/macOS/Linux device. By default, it is also configured to have LAN-wide access, so you are able to connect to the LLaMaDesu frontend from **any device within the same Wi-Fi network** (assuming the device has a browser that supports WebGL). Hence, you can access LLaMaDesu from your **phone, laptop, Nintendo Switch** or even your **smart fridge**, making it extremely versatile and convenient, benefitting that of a **progressive web app (PWA)**.
+- LLaMaDesu can be hosted on any Windows/macOS/Linux device. By default, it is also configured to have LAN-wide access, so you are able to connect to the LLaMaDesu frontend from **any device within the same Wi-Fi network** (assuming the device has a browser that supports WebGL). Hence, you can access LLaMaDesu from your **phone, laptop, gaming console** or even your **smart fridge**, making it extremely versatile and convenient, benefitting that of a **progressive web app (PWA)**.
 
 💭 **Local & Cloud LLM Support**
 - Have a powerful GPU? You can run the app **completely offline** through your **local** LLM (Ollama)! Otherwise, switch on over to **cloud** mode in `settings.yaml`, and obtain responses through the cloud LLM platform of your choice!
@@ -122,6 +122,8 @@ Check whether if the local machine has any Ollama models (`ollama list`) already
 ollama pull llama3.1:8b
 ```
 
+> **NOTE:** If you wish to pull another open-source LLM model, please feel free to do so, provided that your hardware is powerful enough to support it!
+
 ### 4. Custom Model Creation (Optional)
 
 Navigate to `setup/ollama` and run the custom model creation script:
@@ -190,55 +192,59 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<IP>:<PORT>`.
 
 ---
 
-## **🚀 Usage Guide**
+# **🚀 Usage Guide**
 
 ---
 
-## **🎬 Demo Video**
+# **🎬 Demo Video**
+
+[![Watch on YouTube](https://www.youtube.com/watch?v=vheFnKx5tmE)] Remember to Like, Share and Subscribe 🔔
 
 ---
 
-## **📌 High-Level Technical Overview**
+# **📌 High-Level Technical Overview**
 
 
 ---
-## **⚠️ Disclaimers**
+# **⚠️ Disclaimers**
 
-To quote a popular saying in the cybersec field, **a chain is only as strong as its weakest link.**   
+To quote a popular saying in the security industry, **a chain is only as strong as its weakest link.**   
 In the context of this project, your **IoT network is only as secure as its most vulnerable device.**  
 For this reason, it is highly recommended to:
-- **Host this application on a hardened OS (Windows/Linux)** with **regular updates**.
+- **Host this application on a hardened OS (Windows/Linux)** that is always **up-to-date**.
 - **Use a properly firewalled router/VLAN** to segment your local network.
 - Due to the likely possibility of **LLM hallucinations**, please **do not expose** any high-risk entities (relating to Health, Safety & Security) to Ollama via Assist (e.g. door locks or thermostats). This can be configured in your Ollama settings under HAOS Integrations. 
 
 By using this app, you acknowledge that the app is provided "as is" and at your own risk. We do not accept any liability for any damages, losses, or issues arising from the use of this app. We are not liable for any direct, indirect, incidental, or consequential damages resulting from your use of the app.
 
-This app is not a substitute for a real relationship. Black Mirror has warned us about this. At the end of the day, an LLM is just a highly sophisticated probability-based text prediction model. Please never delude yourself into thinking it is a real person - always reach out if you need someone to talk to. There will always be someone out there willing to help :)
+This app is not a substitute for a real relationship. Black Mirror has warned us about this. At the end of the day, an LLM is just a highly sophisticated probability-based text prediction model. Please never delude yourself into thinking it is a real person - always reach out if you need someone to talk to. **There will always be someone out there willing to help :)**
 
 LLaMaDesu is not affiliated with the developers of Home Assistant OS (Nabu Casa, Inc or the Open Home Foundation). Any use of their name or brand is purely for informational or descriptive purposes.
 
 ---
-## **📜 Third Party Licenses**
+# **📜 Third Party Licenses**
 ### Live2D Sample Models Notice
 
-This project includes Live2D sample models **(Shizuku (Cubism 2.1) and Haru (Cubism 4))** provided by Live2D Inc. These assets are licensed separately under the Live2D Free Material License Agreement and the Terms of Use for Live2D Cubism Sample Data. They are not covered by the MIT license of this project.
+This project includes Live2D sample models **(Hiyori (Cubism 2.1) and Haru (Cubism 4))** provided by Live2D Inc. These assets are licensed separately under the Live2D Free Material License Agreement and the Terms of Use for Live2D Cubism Sample Data. They are not covered by the MIT license of this project.
 
 The Live2D simple models are owned and copyrighted by Live2D Inc. The sample data are utilized in accordance with the terms and conditions set by Live2D Inc. (See [**Live2D Free Material License Agreement**](https://www.live2d.jp/en/terms/live2d-free-material-license-agreement/) and [**Terms of Use**](https://www.live2d.com/eula/live2d-sample-model-terms_en.html)).
 
 **Note:** For commercial use, especially by medium or large-scale enterprises, the use of these Live2D sample models may be subject to additional licensing requirements. If you plan to use this project commercially, please ensure that you have the appropriate permissions from Live2D Inc., or use versions of the project without these models.
 
 ---
-## **⭐️ Project Milestones**
+# **⭐️ Project Milestones**
 <div align="center">
   
 | Plan | Stars | Achieved? |
 |------|-------|-----------|
-| Public release of improved Kozue Piper TTS model (trained over 100,000 epochs) | 10 | ❌ |
-| Migration of frontend to React framework | 100 | ❌ |
-| Commission of LLaMaDesu-themed Live2D model (bring our logo character to life!) | 1000 | ❌ |
+| Public release of **improved Kozue Piper TTS model** (trained over 100,000 epochs) | 10 | ❌ |
+| Add support for **Spine.js** models | 50 | ❌ |
+| Migration of frontend to **React** framework | 100 | ❌ |
+| Commission of **LLaMaDesu-themed Live2D model** (bring our logo character to life!) | 1000 | ❌ |
 
 <br>
 
 [![Star History Chart](https://api.star-history.com/svg?repos=chaosiris/llamadesu&type=Date)](https://star-history.com/#chaosiris/llamadesu&Date)
 
 </div>
+---
