@@ -194,6 +194,36 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<IP>:<PORT>`.
 
 # **🚀 Usage Guide**
 
+## ✏️ Text Input
+
+![textinput](https://github.com/user-attachments/assets/ca1e2108-562a-4d23-9b34-468e073b5a95)
+
+## 🎤 Voice Input (Push To Talk)
+
+## 🔁 Repeat Input
+
+![repeatinput](https://github.com/user-attachments/assets/5855a4b2-fffb-406b-b13b-999890c99f91)
+
+## ▶️ Auto Scroll / ⬆️ Scroll To Top
+
+![scroll](https://github.com/user-attachments/assets/bd609ffe-8233-48c4-b861-5403f3ac4f46)
+
+## 📜 Chat History
+
+![chathistory](https://github.com/user-attachments/assets/908ddd45-a6f3-408c-8157-2e669ca1a349)
+
+## ✨ Presets
+
+![presets](https://github.com/user-attachments/assets/fde84b25-0b0d-4924-844c-4d7f8337c16c)
+
+## 💻 Connected Clients
+
+![clients](https://github.com/user-attachments/assets/81811efe-b8f9-4090-bc1a-a622519b825b)
+
+## ⚙️ Settings
+
+![settings](https://github.com/user-attachments/assets/37ba374c-5139-48b5-aec7-72d07ed972ce)
+
 ---
 
 # **🎬 Demo Video**
@@ -270,4 +300,3 @@ The Live2D simple models are owned and copyrighted by Live2D Inc. The sample dat
 [![Star History Chart](https://api.star-history.com/svg?repos=chaosiris/llamadesu&type=Date)](https://star-history.com/#chaosiris/llamadesu&Date)
 
 </div>
----
