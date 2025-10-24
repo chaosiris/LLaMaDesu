@@ -10,6 +10,25 @@ Furthermore, LLaMaDesu is a **free and open-source** software, with support for 
 It's already the big 2020s after all - who doesn't need an anime AI chatbot in their lives? ;) Without further ado, thank you for your support and we truly hope you enjoy using LLaMaDesu! 
 
 ---
+
+# Table of Contents
+
+- [⚡ Features](#features)
+- [🎬 Demo Video](#demo-video)
+- [📦 Requirements](#requirements)
+  - [Software](#software)
+  - [Hardware](#hardware)
+- [📥 Setup Guide](#setup-guide)
+  - [Option A - Automated Scripts (Windows)](#option-a-automated-scripts-windows)
+  - [Option B - Manual Provisioning (For Linux/macOS)](#option-b-manual-provisioning-for-linuxmacos)
+- [🚀 Usage Guide](#usage-guide)
+- [📌 High-Level Technical Overview](#high-level-technical-overview)
+- [⚠️ Disclaimers](#disclaimers)
+- [📜 Third Party Licenses](#third-party-licenses)
+- [⭐️ Project Milestones](#project-milestones)
+
+---
+
 # ⚡ Features
 
 🧩 **Cross-Platform and LAN-Wide Connectivity**
@@ -85,7 +104,7 @@ Remember to Like, Share and Subscribe! 🥰🔔🚨
 
 # 📥 Setup Guide
 
-## Option A - Automated Scripts
+## Option A - Automated Scripts (Windows)
 
 ### 1. Run setup.exe
 Once you have installed all required software, run `setup.exe` at the root folder to begin the setup process. This process encompasses the following:
@@ -99,7 +118,7 @@ Once you have installed all required software, run `setup.exe` at the root folde
 ### 2. Run LLaMaDesu!.exe
 Navigate to the src/ folder and run LLaMaDesu!.exe to launch the web app. Open up a browser and connect to the frontend interface via `<PROTOCOL>://<HOST IP>:<PORT>` as specified in `settings.yaml`. That's all for the setup process!
 
-## Option B - Manual Provisioning
+## Option B - Manual Provisioning (For Linux/macOS)
 
 ### 1. Virtual Environment
 From the root folder, create a venv/ inside the src/ folder, then activate it:
@@ -234,13 +253,13 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<HOST IP>:<PO
 ## ✨ Presets
 
 - Toggle the **presets sidebar** by clicking on the ✨ **star icon** on the bottom-right corner! The list of presets stored in `src/presets.json` will be loaded into the sidebar, allowing for the quick sending of frequently used prompts.
-- **➕ Add/📝 Edit Feature:** To add a new preset, just click on the add icon to bring up a modal which lets you input the name and content of the preset prompt, which will be saved into the `src/presets.json` file! Similarly, you can edit existing presets by selecting its checkbox and clicking on the edit icon. Make sure to save any changes!
+- **➕ Add/📝 Edit Feature:** To add a new preset, just click on the add icon to bring up a modal, allowing you to input the name and content of the new preset prompt, which will then be saved into the `src/presets.json` file! Similarly, you can edit existing presets by selecting its checkbox and clicking on the edit icon. Make sure to save any changes!
 - **🗑 Remove Feature:** Delete unused or unnecessary presets by selecting its checkbox and clicking on the delete icon! It's also possible to delete multiple presets via checkboxes.
 ![presets](https://github.com/user-attachments/assets/fde84b25-0b0d-4924-844c-4d7f8337c16c)
 
 ## 💻 Connected Clients
 
-- Toggle the **connected clients modal** by clicking on the 💻 **computer icon** on the bottom-left corner. This shows a list of device IPs which are connected to the LLaMaDesu instance over the local network. Manually disconnect any client by clicking on the **Disconnect** button. You can even disconnect yourself, the host! To reconnect, just refresh the browser.
+- Toggle the **connected clients modal** by clicking on the 💻 **computer icon** on the bottom-left corner. This shows a **list of device IPs** which are connected to the LLaMaDesu instance over the local network. Manually disconnect any client by clicking on the **Disconnect** button. You can even disconnect yourself, the host! To reconnect, just refresh the browser.
 ![clients](https://github.com/user-attachments/assets/81811efe-b8f9-4090-bc1a-a622519b825b)
 
 ## ⚙️ Settings
@@ -250,8 +269,25 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<HOST IP>:<PO
 
 ## 👉 Tap Motions
 
-- Depending on your `src/model_dict.json` configuration and the Live2D model's compatibility, you can also trigger tap motions by clicking on your character! 
+- Depending on your `src/model_dict.json` configuration and the Live2D model's compatibility, you can also trigger **tap motions** by clicking on your character! 
 ![tapmotions](https://github.com/user-attachments/assets/31964d74-4020-45cc-b49d-3af83565a6c5)
+
+## Shortcut Keys
+
+- For users with a discrete keyboard, there are **shortcut keys** available to toggle certain actions on the frontend, as shown in the table below:
+ 
+<div align="center">
+  
+| Shortcut Action            | Key          |
+|----------------------------|--------------|
+| Text Input                 | `I`          |
+| Voice Input (Hold)         | `Spacebar`   |
+| Chat History Sidebar       | `H`          |
+| Presets Sidebar            | `P`          |
+| Settings Modal             | `S`          |
+| Connected Clients Modal    | `C`          |
+
+</div>
 
 ---
 
@@ -278,6 +314,7 @@ As shown in the diagram, **LLaMaDesu!** can be segmented into **three major comp
     User Interface (Text/Voice Input) ➝ Backend Services (FastAPI & WebSockets) ➝ Faster-Whisper (STT) ⇄ Ollama/HAOS Assist (LLM) ⇄ Piper (TTS) ➝ New .txt and .wav file generated in src/output ➝ Backend Services (monitor_notifications() Function) ➝ User Interface (Text/Voice Output)
 
 ---
+
 # **⚠️ Disclaimers**
 
 To quote a popular saying in the security industry, **a chain is only as strong as its weakest link.**   
@@ -294,6 +331,7 @@ This app is not a substitute for a real relationship. Black Mirror has warned us
 LLaMaDesu is not affiliated with the developers of Home Assistant OS (Nabu Casa, Inc or the Open Home Foundation). Any use of their name or brand is purely for informational or descriptive purposes.
 
 ---
+
 # **📜 Third Party Licenses**
 ### Live2D Sample Models Notice
 
@@ -304,6 +342,7 @@ The Live2D simple models are owned and copyrighted by Live2D Inc. The sample dat
 **Note:** For commercial use, especially by medium or large-scale enterprises, the use of these Live2D sample models may be subject to additional licensing requirements. If you plan to use this project commercially, please ensure that you have the appropriate permissions from Live2D Inc., or use versions of the project without these models.
 
 ---
+
 # **⭐️ Project Milestones**
 <div align="center">
   
