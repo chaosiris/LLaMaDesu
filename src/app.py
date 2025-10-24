@@ -204,7 +204,6 @@ async def send_to_ollama(user_input: str):
 
                 try:
                     response_data = json.loads(line)
-                    print(response_data)
 
                     # If using /api/chat, look for 'message'['content']
                     if 'message' in response_data and 'content' in response_data['message']:

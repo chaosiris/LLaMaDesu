@@ -32,6 +32,10 @@ It's already the big 2020s after all - who doesn't need an anime AI chatbot in t
 
 # ⚡ Features <a name="features"></a>
 
+<details>
+<summary>Click to Expand/Collapse Section</summary>
+<br>
+
 🧩 **Cross-Platform and LAN-Wide Connectivity**
 - LLaMaDesu can be hosted on any Windows/macOS/Linux device. By default, it is also configured to have LAN-wide access, so you are able to connect to the LLaMaDesu frontend from **any device within the same Wi-Fi network** (assuming the device has a browser that supports WebGL). Hence, you can access LLaMaDesu from your **phone, laptop, gaming console** or even your **smart fridge**, making it extremely versatile and convenient, benefitting that of a **progressive web app (PWA)**.
 
@@ -74,6 +78,8 @@ It's already the big 2020s after all - who doesn't need an anime AI chatbot in t
   - **save-chat-history**: Decide whether to store your chat history for future reference. Disable for privacy.  
   - **adaptive-background**: Automatically adjust the background based on the time of day.  
   - **timeout**: Set a custom timeout duration before cancelling the LLM response.
+
+</details>
 
 ---
 
@@ -154,13 +160,13 @@ pip install -r requirements.txt
 
 ### 3. Pull Model from Ollama
 
-Check whether if the local machine has any Ollama models (`ollama list`) already installed. If not, perform the following steps:
+Check whether if the local machine has any open-source LLM models (`ollama list`) already installed. If not, perform the following steps:
 
 ```bash
 ollama pull llama3.1:8b
 ```
 
-> **NOTE:** If you wish to pull another open-source LLM model, please feel free to do so, provided that your hardware is powerful enough to support it!
+> **NOTE:** If you wish to pull another open-source LLM model, please feel free to do so, provided that your hardware is powerful enough to support it! Calculate whether your GPU has enough VRAM to support the aforementioned model at [ApX's VRAM Calculator](https://apxml.com/tools/vram-calculator).
 
 ### 4. Custom Model Creation (Optional)
 
@@ -175,11 +181,7 @@ Once created, update the `OLLAMA_MODEL` variable in `settings.yaml` to use your 
 
 ### 5. Home Assistant Integration (Optional)
 
-For Home Assistant (HAOS) mode users, copy the automation file:
-
-```bash
-cp setup/haos/haos_webhook.yaml <your_haos_automations_directory>
-```
+For Home Assistant (HAOS) mode users, follow the steps in this section: [Configuration for Home Assistant OS (HAOS)](#haos-config)
 
 ### 6. SSL Certificate Generation
 
@@ -270,6 +272,9 @@ For more detailed information, please check out the Home Assistant OS Voice Assi
 
 # **🚀 Usage Guide** <a name="usage-guide"></a>
 
+<details>
+<summary>Click to Expand/Collapse Section</summary>
+
 ## ✏️ Text Input
 
 - Toggle the **text input mode** by clicking on the ✏️ **pencil icon** on the bottom-right corner!
@@ -335,9 +340,14 @@ For more detailed information, please check out the Home Assistant OS Voice Assi
 
 </div>
 
+</details>
+
 ---
 
 # **📌 High-Level Technical Overview** <a name="high-level-technical-overview"></a>
+
+<details>
+<summary>Click to Expand/Collapse Section</summary>
 
 <img width="auto" height="auto" alt="High-Level Technical Overview Diagram" src="https://github.com/user-attachments/assets/16fcbb55-0ea2-47b6-a7e2-a95242a7b06f" />
 
@@ -358,6 +368,8 @@ As shown in the diagram, **LLaMaDesu!** can be segmented into **three major comp
 
 ### 🔄 TL;DR
     User Interface (Text/Voice Input) ➝ Backend Services (FastAPI & WebSockets) ➝ Faster-Whisper (STT) ⇄ Ollama/HAOS Assist (LLM) ⇄ Piper (TTS) ➝ New .txt and .wav file generated in src/output ➝ Backend Services (monitor_notifications() Function) ➝ User Interface (Text/Voice Output)
+
+</details>
 
 ---
 
