@@ -19,8 +19,8 @@ It's already the big 2020s after all - who doesn't need an anime AI chatbot in t
   - [Software](#software)
   - [Hardware](#hardware)
 - [📥 Setup Guide](#setup-guide)
-  - [Option A - Automated Scripts (Windows)](#option-a-automated-scripts-windows)
-  - [Option B - Manual Provisioning (For Linux/macOS)](#option-b-manual-provisioning-for-linuxmacos)
+  - [Option A - Automated Scripts (Windows)](#option-a)
+  - [Option B - Manual Provisioning (For Linux/macOS)](#option-b)
 - [🚀 Usage Guide](#usage-guide)
 - [📌 High-Level Technical Overview](#high-level-technical-overview)
 - [⚠️ Disclaimers](#disclaimers)
@@ -29,7 +29,7 @@ It's already the big 2020s after all - who doesn't need an anime AI chatbot in t
 
 ---
 
-# ⚡ Features
+# ⚡ Features <a name="features"></a>
 
 🧩 **Cross-Platform and LAN-Wide Connectivity**
 - LLaMaDesu can be hosted on any Windows/macOS/Linux device. By default, it is also configured to have LAN-wide access, so you are able to connect to the LLaMaDesu frontend from **any device within the same Wi-Fi network** (assuming the device has a browser that supports WebGL). Hence, you can access LLaMaDesu from your **phone, laptop, gaming console** or even your **smart fridge**, making it extremely versatile and convenient, benefitting that of a **progressive web app (PWA)**.
@@ -62,7 +62,7 @@ It's already the big 2020s after all - who doesn't need an anime AI chatbot in t
 ✨ **Customizable Presets**  
 - Set up a **shortcut list** of frequently used prompts (e.g. "turn off the lights in the living room") so you can quickly trigger actions with a single click or tap. This feature allows for extremely efficient and streamlined control over your smart home.
 
-⚙️ **Flexible Settings Configuration**  
+⚙️ **Flexible Settings Configuration**  <a name="frontend-settings"></a>
 - Tailor the app to your preferences with a wide range of settings, which can be customized in the `settings.yaml` file, including:
   - **show-sent-prompts**: Choose whether or not to display the text prompt after sending it.  
   - **enable-idle-motion**: Enable or disable idle motion animations for the Live2D model.  
@@ -76,7 +76,7 @@ It's already the big 2020s after all - who doesn't need an anime AI chatbot in t
 
 ---
 
-# **🎬 Demo Video**
+# **🎬 Demo Video** <a name="demo-video"></a>
 
 https://github.com/user-attachments/assets/6a09530e-4d78-4e93-b8be-87079ab73afc
 
@@ -86,7 +86,7 @@ Remember to Like, Share and Subscribe! 🥰🔔🚨
 
 ---
 
-# 📦 Requirements
+# 📦 Requirements <a name="requirements"></a>
 
 ## Software
 - Python 3.10+ [[Python Download](https://www.python.org/downloads/)]
@@ -102,9 +102,9 @@ Remember to Like, Share and Subscribe! 🥰🔔🚨
 
 ---
 
-# 📥 Setup Guide
+# 📥 Setup Guide <a name="setup-guide"></a>
 
-## Option A - Automated Scripts (Windows)
+## Option A - Automated Scripts (Windows) <a name="option-a"></a>
 
 ### 1. Run setup.exe
 Once you have installed all required software, run `setup.exe` at the root folder to begin the setup process. This process encompasses the following:
@@ -118,7 +118,7 @@ Once you have installed all required software, run `setup.exe` at the root folde
 ### 2. Run LLaMaDesu!.exe
 Navigate to the src/ folder and run LLaMaDesu!.exe to launch the web app. Open up a browser and connect to the frontend interface via `<PROTOCOL>://<HOST IP>:<PORT>` as specified in `settings.yaml`. That's all for the setup process!
 
-## Option B - Manual Provisioning (For Linux/macOS)
+## Option B - Manual Provisioning (For Linux/macOS) <a name="option-b"></a>
 
 ### 1. Virtual Environment
 From the root folder, create a venv/ inside the src/ folder, then activate it:
@@ -221,7 +221,7 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<HOST IP>:<PO
 
 ---
 
-# **🚀 Usage Guide**
+# **🚀 Usage Guide** <a name="usage-guide"></a>
 
 ## ✏️ Text Input
 
@@ -240,21 +240,21 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<HOST IP>:<PO
 
 ## ▶️ Auto Scroll / ⬆️ Scroll To Top
 
-- Tired of scrolling through long responses? Click on the ▶️ **play icon** to enable auto-scroll mode, then tap on the ⬆️ **up icon** to automatically jump back to the top of the paragraph if needed!
+- Tired of scrolling through long responses? Click on the ▶️ **play icon** to enable auto-scroll mode, then tap on the ⬆️ **up icon** to instantly jump back to the top of the paragraph if needed!
 ![scroll](https://github.com/user-attachments/assets/bd609ffe-8233-48c4-b861-5403f3ac4f46)
 
 ## 📜 Chat History
 
 - Toggle the **chat history sidebar** by clicking on the 📜 **scroll icon** on the bottom-left corner! All previous text responses stored in `src/output` will be listed in **reverse chronological order**, and can be loaded back into the frontend upon clicking. It's also possible to filter for responses containing a specific word through the **🔍 search bar** feature!
-- **📦 Archiving/🗑 Deletion Feature:** Want to archive or delete certain responses? Just select the checkbox for that entry and click on the corresponding icon! Archived entries will be placed into `src/archived`, whereas deleted entries will be securely processed via 7 deletion passthroughs and therefore be non-recoverable.
+- **📦 Archive/🗑 Delete Chat History:** Want to archive or delete certain responses? Just select the checkbox for that entry and click on the corresponding icon! Archived entries will be placed into `src/archived`, whereas deleted entries will be securely processed via 7 deletion passthroughs and therefore be non-recoverable.
 > **NOTE:** If no entries are selected when clicking on the archive/delete icons, it is assumed that all entries are selected!
 ![chathistory](https://github.com/user-attachments/assets/908ddd45-a6f3-408c-8157-2e669ca1a349)
 
 ## ✨ Presets
 
 - Toggle the **presets sidebar** by clicking on the ✨ **star icon** on the bottom-right corner! The list of presets stored in `src/presets.json` will be loaded into the sidebar, allowing for the quick sending of frequently used prompts.
-- **➕ Add/📝 Edit Feature:** To add a new preset, just click on the add icon to bring up a modal, allowing you to input the name and content of the new preset prompt, which will then be saved into the `src/presets.json` file! Similarly, you can edit existing presets by selecting its checkbox and clicking on the edit icon. Make sure to save any changes!
-- **🗑 Remove Feature:** Delete unused or unnecessary presets by selecting its checkbox and clicking on the delete icon! It's also possible to delete multiple presets via checkboxes.
+- **➕ Add/📝 Edit Preset:** To add a new preset, just click on the add icon to bring up a modal, allowing you to input the name and content of the new preset prompt, which will then be saved into the `src/presets.json` file! Similarly, you can edit existing presets by selecting its checkbox and clicking on the edit icon. Make sure to save any changes!
+- **🗑 Remove Preset:** Delete unused or unnecessary presets by selecting its checkbox and clicking on the delete icon! It's also possible to delete multiple presets via checkboxes.
 ![presets](https://github.com/user-attachments/assets/fde84b25-0b0d-4924-844c-4d7f8337c16c)
 
 ## 💻 Connected Clients
@@ -264,7 +264,7 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<HOST IP>:<PO
 
 ## ⚙️ Settings
 
-- Toggle the **settings modal** by clicking on the ⚙️ **gear icon**. You can change all sorts of frontend settings here, including switching between your Live2D models as listed in `src/model_dict.json` and available in `src/live2d_models`.
+- Toggle the **settings modal** by clicking on the ⚙️ **gear icon**. You can change all sorts of [frontend settings](#frontend-settings) here, including switching between your Live2D models as listed in `src/model_dict.json` and available in `src/live2d_models`.
 ![settings](https://github.com/user-attachments/assets/37ba374c-5139-48b5-aec7-72d07ed972ce)
 
 ## 👉 Tap Motions
@@ -272,10 +272,9 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<HOST IP>:<PO
 - Depending on your `src/model_dict.json` configuration and the Live2D model's compatibility, you can also trigger **tap motions** by clicking on your character! 
 ![tapmotions](https://github.com/user-attachments/assets/31964d74-4020-45cc-b49d-3af83565a6c5)
 
-## Shortcut Keys
+## ⌨️ Shortcut Keys
 
 - For users with a discrete keyboard, there are **shortcut keys** available to toggle certain actions on the frontend, as shown in the table below:
- 
 <div align="center">
   
 | Shortcut Action            | Key          |
@@ -291,7 +290,7 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<HOST IP>:<PO
 
 ---
 
-# **📌 High-Level Technical Overview**
+# **📌 High-Level Technical Overview** <a name="high-level-technical-overview"></a>
 
 <img width="auto" height="auto" alt="High-Level Technical Overview Diagram" src="https://github.com/user-attachments/assets/16fcbb55-0ea2-47b6-a7e2-a95242a7b06f" />
 
@@ -315,7 +314,7 @@ As shown in the diagram, **LLaMaDesu!** can be segmented into **three major comp
 
 ---
 
-# **⚠️ Disclaimers**
+# **⚠️ Disclaimers** <a name="disclaimers"></a>
 
 To quote a popular saying in the security industry, **a chain is only as strong as its weakest link.**   
 In the context of this project, your **IoT network is only as secure as its most vulnerable device.**  
@@ -332,7 +331,7 @@ LLaMaDesu is not affiliated with the developers of Home Assistant OS (Nabu Casa,
 
 ---
 
-# **📜 Third Party Licenses**
+# **📜 Third Party Licenses** <a name="third-party-licenses"></a>
 ### Live2D Sample Models Notice
 
 This project includes Live2D sample models **(Hiyori (Cubism 2.1) and Haru (Cubism 4))** provided by Live2D Inc. These assets are licensed separately under the Live2D Free Material License Agreement and the Terms of Use for Live2D Cubism Sample Data. They are not covered by the MIT license of this project.
@@ -343,7 +342,7 @@ The Live2D simple models are owned and copyrighted by Live2D Inc. The sample dat
 
 ---
 
-# **⭐️ Project Milestones**
+# **⭐️ Project Milestones** <a name="project-milestones"></a>
 <div align="center">
   
 | Plan | Stars | Achieved? |
@@ -351,7 +350,7 @@ The Live2D simple models are owned and copyrighted by Live2D Inc. The sample dat
 | Public release of **improved Kozue Piper TTS model** (trained over 100,000 epochs) | 10 | ❌ |
 | Add support for **Spine.js** models | 50 | ❌ |
 | Migration of frontend to **React** framework | 100 | ❌ |
-| Development of LLaMaDesu's **SaaS platform** (chat with your character anywhere you go! 🗣)  | 500 | ❌ |
+| Development of LLaMaDesu **SaaS platform** (chat with your character anywhere you go! 🗣)  | 500 | ❌ |
 | Commission of **LLaMaDesu-themed Live2D model** (bring our logo character to life!) | 1000 | ❌ |
 
 <br>
