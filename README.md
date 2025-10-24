@@ -57,6 +57,16 @@ It's already the big 2020s after all - who doesn't need an anime AI chatbot in t
 
 ---
 
+# **🎬 Demo Video**
+
+https://github.com/user-attachments/assets/6a09530e-4d78-4e93-b8be-87079ab73afc
+
+[![Watch on YouTube](https://www.youtube.com/watch?v=vheFnKx5tmE)]
+
+Remember to Like, Share and Subscribe! 🥰🔔🚨
+
+---
+
 # 📦 Requirements
 
 ## Software
@@ -87,7 +97,7 @@ Once you have installed all required software, run `setup.exe` at the root folde
 - Downloading of Docker containers required for local STT and TTS processing.
 
 ### 2. Run LLaMaDesu!.exe
-Navigate to the src/ folder and run LLaMaDesu!.exe to launch the web app. Open up a browser and connect to the frontend interface via `<PROTOCOL>://<IP>:<PORT>` as specified in `settings.yaml`. That's all for the setup process!
+Navigate to the src/ folder and run LLaMaDesu!.exe to launch the web app. Open up a browser and connect to the frontend interface via `<PROTOCOL>://<HOST IP>:<PORT>` as specified in `settings.yaml`. That's all for the setup process!
 
 ## Option B - Manual Provisioning
 
@@ -188,7 +198,7 @@ Run the application:
 python app.py
 ```
 
-Open your browser and connect to the app via the URL `<PROTOCOL>://<IP>:<PORT>`.
+Open your browser and connect to the app via the URL `<PROTOCOL>://<HOST IP>:<PORT>`.
 
 ---
 
@@ -196,62 +206,72 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<IP>:<PORT>`.
 
 ## ✏️ Text Input
 
+- Toggle the **text input mode** by clicking on the ✏️ **pencil icon** on the bottom-right corner!
 ![textinput](https://github.com/user-attachments/assets/ca1e2108-562a-4d23-9b34-468e073b5a95)
 
 ## 🎤 Voice Input (Push To Talk)
 
+- Hold the  🎤 **Push To Talk** button in the middle of the screen and release to send your voice input!
+![voiceinput](https://github.com/user-attachments/assets/c42601d0-3f15-46af-9651-82f06c50d6ac)
+
 ## 🔁 Repeat Input
 
+- After sending a text/voice input, the 🔁 **repeat icon** will appear, which when clicked, will resend your previous input!
 ![repeatinput](https://github.com/user-attachments/assets/5855a4b2-fffb-406b-b13b-999890c99f91)
 
 ## ▶️ Auto Scroll / ⬆️ Scroll To Top
 
+- Tired of scrolling through long responses? Click on the ▶️ **play icon** to enable auto-scroll mode, then tap on the ⬆️ **up icon** to automatically jump back to the top of the paragraph if needed!
 ![scroll](https://github.com/user-attachments/assets/bd609ffe-8233-48c4-b861-5403f3ac4f46)
 
 ## 📜 Chat History
 
+- Toggle the **chat history sidebar** by clicking on the 📜 **scroll icon** on the bottom-left corner! All previous text responses stored in `src/output` will be listed in **reverse chronological order**, and can be loaded back into the frontend upon clicking. It's also possible to filter for responses containing a specific word through the **🔍 search bar** feature!
+- **📦 Archiving/🗑 Deletion Feature:** Want to archive or delete certain responses? Just select the checkbox for that entry and click on the corresponding icon! Archived entries will be placed into `src/archived`, whereas deleted entries will be securely processed via 7 deletion passthroughs and therefore be non-recoverable.
+> **NOTE:** If no entries are selected when clicking on the archive/delete icons, it is assumed that all entries are selected!
 ![chathistory](https://github.com/user-attachments/assets/908ddd45-a6f3-408c-8157-2e669ca1a349)
 
 ## ✨ Presets
 
+- Toggle the **presets sidebar** by clicking on the ✨ **star icon** on the bottom-right corner! The list of presets stored in `src/presets.json` will be loaded into the sidebar, allowing for the quick sending of frequently used prompts.
+- **➕ Add/📝 Edit Feature:** To add a new preset, just click on the add icon to bring up a modal which lets you input the name and content of the preset prompt, which will be saved into the `src/presets.json` file! Similarly, you can edit existing presets by selecting its checkbox and clicking on the edit icon. Make sure to save any changes!
+- **🗑 Remove Feature:** Delete unused or unnecessary presets by selecting its checkbox and clicking on the delete icon! It's also possible to delete multiple presets via checkboxes.
 ![presets](https://github.com/user-attachments/assets/fde84b25-0b0d-4924-844c-4d7f8337c16c)
 
 ## 💻 Connected Clients
 
+- Toggle the **connected clients modal** by clicking on the 💻 **computer icon** on the bottom-left corner. This shows a list of device IPs which are connected to the LLaMaDesu instance over the local network. Manually disconnect any client by clicking on the **Disconnect** button. You can even disconnect yourself, the host! To reconnect, just refresh the browser.
 ![clients](https://github.com/user-attachments/assets/81811efe-b8f9-4090-bc1a-a622519b825b)
 
 ## ⚙️ Settings
 
+- Toggle the **settings modal** by clicking on the ⚙️ **gear icon**. You can change all sorts of frontend settings here, including switching between your Live2D models as listed in `src/model_dict.json` and available in `src/live2d_models`.
 ![settings](https://github.com/user-attachments/assets/37ba374c-5139-48b5-aec7-72d07ed972ce)
 
----
+## 👉 Tap Motions
 
-# **🎬 Demo Video**
-
-https://github.com/user-attachments/assets/6a09530e-4d78-4e93-b8be-87079ab73afc
-
-[![Watch on YouTube](https://www.youtube.com/watch?v=vheFnKx5tmE)] 
-Remember to Like, Share and Subscribe! 🗣🔔🚨
+- Depending on your `src/model_dict.json` configuration and the Live2D model's compatibility, you can also trigger tap motions by clicking on your character! 
+![tapmotions](https://github.com/user-attachments/assets/31964d74-4020-45cc-b49d-3af83565a6c5)
 
 ---
 
 # **📌 High-Level Technical Overview**
 
-<img width="auto" height="auto" alt="High-Level Technical Overview Diagram" src="https://github.com/user-attachments/assets/760d1ed6-efec-4f66-b132-9beda7e3c3fe" />
+<img width="auto" height="auto" alt="High-Level Technical Overview Diagram" src="https://github.com/user-attachments/assets/16fcbb55-0ea2-47b6-a7e2-a95242a7b06f" />
 
 As shown in the diagram, **LLaMaDesu!** can be segmented into **three major components**:
 
 ### 1. User Interface/Frontend (Powered by Live2D & Pixi.js)
 - Upon browser initialization, the **Pixi.js framework** validates the selected Live2D model files from the host's `src/live2d_models` folder. WebGL then renders the Live2D model seamlessly, forming an interactive and responsive frontend interface, complete with your favourite Live2D character.
-- When the user sends a text/voice input, JavaScript sends the input securely via an **API call(( to the backend for processing.
+- When the user sends a text/voice input, JavaScript sends the input securely via an **API call** to the backend for processing.
 
 ### 2. Backend Services (Powered by Python's FastAPI & WebSockets)
 - Due to the necessity for real-time communication, the backend is constructed using Python's **FastAPI** and **WebSockets** packages to ensure **optimized response times** between each API endpoint and all connected frontend clients.
-- The response is procedurally generated via a *'ping-pong'* structured pipeline. For instance, the user's voice input is **first sent to Faster-Whisper's Docker container**, then **back to the backend** for validation, which then gets sent to the following endpoints (Ollama & Piper). Ultimately, the output `.txt` and `.wav` files will be generated by the Piper Docker container and be placed into the `src/output` folder. Finally, the `monitor_notifications()` function in the backend will pick up the existence of these new files upon generation and forward it to the frontend interface.
+- The response is procedurally generated via a *'ping-pong'* structured pipeline. For instance, the user's voice input is **first sent to Faster-Whisper Docker container**, then **back to the backend** for validation, which then gets sent to the following endpoints (Ollama & Piper). Ultimately, the output `.txt` and `.wav` files will be generated by the Piper Docker container and be placed into the `src/output` folder. Finally, the `monitor_notifications()` function in the backend will pick up the existence of these new files upon generation and forward it to the frontend interface.
   - Note that if the user sends a text input, the Faster-Whisper Docker container will be bypassed entirely.
 
 ### 3. Wyoming Protocol (Faster-Whisper STT, Ollama & Piper TTS)
-- The **Faster-Whisper** and **Piper Docker** containers accept inputs via **TCP endpoints** *(with default ports being 10300 and 10200 respectively)*. Upon receiving an input via an API call, proprietary Wyoming methods will be called to synthesize the corresponding output text/audio, based on the selected STT/TTS models.
+- The **Faster-Whisper** and **Piper** Docker containers accept inputs via **TCP endpoints** *(with default ports being 10300 and 10200 respectively)*. Upon receiving an input via an API call, proprietary Wyoming methods will be called to synthesize the corresponding output text/audio, based on the selected STT/TTS models.
 - On the other hand, **Ollama** accepts inputs via a standard **HTTP(s) endpoint** *(default port 11434)*. Depending on the chosen LLM model and model file instructions, it will harness the user's GPU power to generate a relevant output text response, based on the user's input.
 
 ### 🔄 TL;DR
