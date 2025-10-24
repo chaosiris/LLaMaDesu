@@ -11,7 +11,7 @@ It's already the big 2020s after all - who doesn't need an anime AI chatbot in t
 
 ---
 
-# Table of Contents
+# 📋 Table of Contents
 
 - [⚡ Features](#features)
 - [🎬 Demo Video](#demo-video)
@@ -21,6 +21,7 @@ It's already the big 2020s after all - who doesn't need an anime AI chatbot in t
 - [📥 Setup Guide](#setup-guide)
   - [Option A - Automated Scripts (Windows)](#option-a)
   - [Option B - Manual Provisioning (For Linux/macOS)](#option-b)
+  - [Configuration for Home Assistant OS (HAOS)](#haos-config)
 - [🚀 Usage Guide](#usage-guide)
 - [📌 High-Level Technical Overview](#high-level-technical-overview)
 - [⚠️ Disclaimers](#disclaimers)
@@ -103,9 +104,12 @@ Remember to Like, Share and Subscribe! 🥰🔔🚨
 ---
 
 # 📥 Setup Guide <a name="setup-guide"></a>
-
+  
 ## Option A - Automated Scripts (Windows) <a name="option-a"></a>
 
+<details>
+<summary>Click to Expand/Collapse Section</summary>
+  
 ### 1. Run setup.exe
 Once you have installed all required software, run `setup.exe` at the root folder to begin the setup process. This process encompasses the following:
 - Intialization of virtual environment (in `src/venv`);
@@ -118,7 +122,12 @@ Once you have installed all required software, run `setup.exe` at the root folde
 ### 2. Run LLaMaDesu!.exe
 Navigate to the src/ folder and run LLaMaDesu!.exe to launch the web app. Open up a browser and connect to the frontend interface via `<PROTOCOL>://<HOST IP>:<PORT>` as specified in `settings.yaml`. That's all for the setup process!
 
+</details>
+
 ## Option B - Manual Provisioning (For Linux/macOS) <a name="option-b"></a>
+
+<details>
+<summary>Click to Expand/Collapse Section</summary>
 
 ### 1. Virtual Environment
 From the root folder, create a venv/ inside the src/ folder, then activate it:
@@ -219,6 +228,44 @@ python app.py
 
 Open your browser and connect to the app via the URL `<PROTOCOL>://<HOST IP>:<PORT>`.
 
+</details>
+
+## Configuration for Home Assistant OS (HAOS) <a name="haos-config"></a>
+
+<details>
+<summary>Click to Expand/Collapse Section</summary>
+
+### 1. Setup HAOS Integrations
+
+Connect to your Home Assistant OS instance via your browser *(default URL is http://homeassistant.local:8123)*.
+
+Once logged in, proceed to `Settings > Devices & services > Add integration` and add the Ollama, Faster-Whisper and Piper integrations. Note that the Host refers to the device that's hosting the Ollama, Faster-Whisper and Piper Docker containers, and their default ports are 11434, 10300, and 10200 respectively.
+
+If you do not own a Home Assistant Voice PE/ESP32-S3-Box-3 Speaker, then please setup VLC-Telnet as an integration by following the steps [here](https://www.home-assistant.io/integrations/vlc_telnet/)!
+
+![integrations](https://github.com/user-attachments/assets/7cd67329-8129-453c-ba5e-9433a5dc2b7b)
+
+### 2. Setup HAOS Automations
+
+Proceed to `Settings > Automation & scenes > Create automation > Create new automation > Edit in YAML`, and paste the contents of `setup/haos/ollama_automation.yaml` into the page.
+
+- For `agent_id`, ensure it is available in the Ollama integrations and spelled correctly (convert every colon and dot to underscores!)
+- For `media_player_entity_id`, it is crucial to have an output device entity available in HAOS. If you're using VLC-Telnet, set the entity to `media_player.vlc_telnet`, otherwise change it to your Home Assistant Voice PE/ESP32-S3-Box-3's entity!
+  
+![webhook](https://github.com/user-attachments/assets/eb9e6751-e1e9-4332-a7cd-52f4271af07d)
+
+### 3. Setup Voice Assistant Pipeline
+
+Proceed to `Settings > Voice assistants > Add assistant` to construct the voice assistant pipeline in HAOS. Choose the relevant integrations for Ollama, Faster-Whisper and Piper that you've added in step 1 and click submit to save.
+
+- To replicate the behaviour of the voice assistant, you can click on the gear icon under the Conversation Agent tab and paste in the system prompt from `setup/ollama/Modelfile.txt`.
+- If needed, you can expose more smart devices to the voice assistant by clicking on the `x entities exposed` button, which will allow you to give the voice assistant more devices to control.
+
+![voiceassistant](https://github.com/user-attachments/assets/cbc128f2-a575-4087-a930-4b8aa3f06d51)
+
+For more detailed information, please check out the Home Assistant OS Voice Assistant setup guide [here](https://www.home-assistant.io/voice_control/).
+</details>
+
 ---
 
 # **🚀 Usage Guide** <a name="usage-guide"></a>
@@ -246,14 +293,14 @@ Open your browser and connect to the app via the URL `<PROTOCOL>://<HOST IP>:<PO
 ## 📜 Chat History
 
 - Toggle the **chat history sidebar** by clicking on the 📜 **scroll icon** on the bottom-left corner! All previous text responses stored in `src/output` will be listed in **reverse chronological order**, and can be loaded back into the frontend upon clicking. It's also possible to filter for responses containing a specific word through the **🔍 search bar** feature!
-- **📦 Archive/🗑 Delete Chat History:** Want to archive or delete certain responses? Just select the checkbox for that entry and click on the corresponding icon! Archived entries will be placed into `src/archived`, whereas deleted entries will be securely processed via 7 deletion passthroughs and therefore be non-recoverable.
+- **📦🗑 Archive/Delete Chat History:** Want to archive or delete certain responses? Just select the checkbox for that entry and click on the corresponding icon! Archived entries will be placed into `src/archived`, whereas deleted entries will be securely processed via 7 deletion passthroughs and therefore be non-recoverable.
 > **NOTE:** If no entries are selected when clicking on the archive/delete icons, it is assumed that all entries are selected!
 ![chathistory](https://github.com/user-attachments/assets/908ddd45-a6f3-408c-8157-2e669ca1a349)
 
 ## ✨ Presets
 
 - Toggle the **presets sidebar** by clicking on the ✨ **star icon** on the bottom-right corner! The list of presets stored in `src/presets.json` will be loaded into the sidebar, allowing for the quick sending of frequently used prompts.
-- **➕ Add/📝 Edit Preset:** To add a new preset, just click on the add icon to bring up a modal, allowing you to input the name and content of the new preset prompt, which will then be saved into the `src/presets.json` file! Similarly, you can edit existing presets by selecting its checkbox and clicking on the edit icon. Make sure to save any changes!
+- **➕📝 Add/Edit Preset:** To add a new preset, just click on the add icon to bring up a modal, allowing you to input the name and content of the new preset prompt, which will then be saved into the `src/presets.json` file! Similarly, you can edit existing presets by selecting its checkbox and clicking on the edit icon. Make sure to save any changes!
 - **🗑 Remove Preset:** Delete unused or unnecessary presets by selecting its checkbox and clicking on the delete icon! It's also possible to delete multiple presets via checkboxes.
 ![presets](https://github.com/user-attachments/assets/fde84b25-0b0d-4924-844c-4d7f8337c16c)
 
