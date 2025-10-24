@@ -277,56 +277,57 @@ For more detailed information, please check out the Home Assistant OS Voice Assi
 
 ## ✏️ Text Input
 
-- Toggle the **text input mode** by clicking on the ✏️ **pencil icon** on the bottom-right corner!
+Toggle the **text input mode** by clicking on the ✏️ **pencil icon** on the bottom-right corner!
 ![textinput](https://github.com/user-attachments/assets/ca1e2108-562a-4d23-9b34-468e073b5a95)
 
 ## 🎤 Voice Input (Push To Talk)
 
-- Hold the  🎤 **Push To Talk** button in the middle of the screen and release to send your voice input!
+Hold the  🎤 **Push To Talk** button in the middle of the screen and release to send your voice input!
 ![voiceinput](https://github.com/user-attachments/assets/c42601d0-3f15-46af-9651-82f06c50d6ac)
 
 ## 🔁 Repeat Input
 
-- After sending a text/voice input, the 🔁 **repeat icon** will appear, which when clicked, will resend your previous input!
+After sending a text/voice input, the 🔁 **repeat icon** will appear, which when clicked, will resend your previous input!
 ![repeatinput](https://github.com/user-attachments/assets/5855a4b2-fffb-406b-b13b-999890c99f91)
 
 ## ▶️ Auto Scroll / ⬆️ Scroll To Top
 
-- Tired of scrolling through long responses? Click on the ▶️ **play icon** to enable auto-scroll mode, then tap on the ⬆️ **up icon** to instantly jump back to the top of the paragraph if needed!
+Tired of scrolling through long responses? Click on the ▶️ **play icon** to enable auto-scroll mode, then tap on the ⬆️ **up icon** to instantly jump back to the top of the paragraph if needed!
 ![scroll](https://github.com/user-attachments/assets/bd609ffe-8233-48c4-b861-5403f3ac4f46)
 
 ## 📜 Chat History
 
-- Toggle the **chat history sidebar** by clicking on the 📜 **scroll icon** on the bottom-left corner! All previous text responses stored in `src/output` will be listed in **reverse chronological order**, and can be loaded back into the frontend upon clicking. It's also possible to filter for responses containing a specific word through the **🔍 search bar** feature!
+Toggle the **chat history sidebar** by clicking on the 📜 **scroll icon** on the bottom-left corner! All previous text responses stored in `src/output` will be listed in **reverse chronological order**, and can be loaded back into the frontend upon clicking. It's also possible to filter for responses containing a specific word through the **🔍 search bar** feature!
 - **📦🗑 Archive/Delete Chat History:** Want to archive or delete certain responses? Just select the checkbox for that entry and click on the corresponding icon! Archived entries will be placed into `src/archived`, whereas deleted entries will be securely processed via 7 deletion passthroughs and therefore be non-recoverable.
 > **NOTE:** If no entries are selected when clicking on the archive/delete icons, it is assumed that all entries are selected!
+
 ![chathistory](https://github.com/user-attachments/assets/908ddd45-a6f3-408c-8157-2e669ca1a349)
 
 ## ✨ Presets
 
-- Toggle the **presets sidebar** by clicking on the ✨ **star icon** on the bottom-right corner! The list of presets stored in `src/presets.json` will be loaded into the sidebar, allowing for the quick sending of frequently used prompts.
+Toggle the **presets sidebar** by clicking on the ✨ **star icon** on the bottom-right corner! The list of presets stored in `src/presets.json` will be loaded into the sidebar, allowing for the quick sending of frequently used prompts.
 - **➕📝 Add/Edit Preset:** To add a new preset, just click on the add icon to bring up a modal, allowing you to input the name and content of the new preset prompt, which will then be saved into the `src/presets.json` file! Similarly, you can edit existing presets by selecting its checkbox and clicking on the edit icon. Make sure to save any changes!
 - **🗑 Remove Preset:** Delete unused or unnecessary presets by selecting its checkbox and clicking on the delete icon! It's also possible to delete multiple presets via checkboxes.
 ![presets](https://github.com/user-attachments/assets/fde84b25-0b0d-4924-844c-4d7f8337c16c)
 
 ## 💻 Connected Clients
 
-- Toggle the **connected clients modal** by clicking on the 💻 **computer icon** on the bottom-left corner. This shows a **list of device IPs** which are connected to the LLaMaDesu instance over the local network. Manually disconnect any client by clicking on the **Disconnect** button. You can even disconnect yourself, the host! To reconnect, just refresh the browser.
+Toggle the **connected clients modal** by clicking on the 💻 **computer icon** on the bottom-left corner. This shows a **list of device IPs** which are connected to the LLaMaDesu instance over the local network. Manually disconnect any client by clicking on the **Disconnect** button. You can even disconnect yourself, the host! To reconnect, just refresh the browser.
 ![clients](https://github.com/user-attachments/assets/81811efe-b8f9-4090-bc1a-a622519b825b)
 
 ## ⚙️ Settings
 
-- Toggle the **settings modal** by clicking on the ⚙️ **gear icon**. You can change all sorts of [frontend settings](#frontend-settings) here, including switching between your Live2D models as listed in `src/model_dict.json` and available in `src/live2d_models`.
+Toggle the **settings modal** by clicking on the ⚙️ **gear icon**. You can change all sorts of [frontend settings](#frontend-settings) here, including switching between your Live2D models as listed in `src/model_dict.json` and available in `src/live2d_models`.
 ![settings](https://github.com/user-attachments/assets/37ba374c-5139-48b5-aec7-72d07ed972ce)
 
 ## 👉 Tap Motions
 
-- Depending on your `src/model_dict.json` configuration and the Live2D model's compatibility, you can also trigger **tap motions** by clicking on your character! 
+Depending on your `src/model_dict.json` configuration and the Live2D model's compatibility, you can also trigger **tap motions** by clicking on your character! 
 ![tapmotions](https://github.com/user-attachments/assets/31964d74-4020-45cc-b49d-3af83565a6c5)
 
 ## ⌨️ Shortcut Keys
 
-- For users with a discrete keyboard, there are **shortcut keys** available to toggle certain actions on the frontend, as shown in the table below:
+For users with a discrete keyboard, there are **shortcut keys** available to toggle certain actions on the frontend, as shown in the table below:
 <div align="center">
   
 | Shortcut Action            | Key          |
